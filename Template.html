@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Template fiszek</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+   <link rel="stylesheet" href="dzialajpls.css">
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
+  
+  <link href='https://fonts.googleapis.com/css?family=Anton' rel='stylesheet'>
+  <link rel="icon" href="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwojakland.com%2Fwp-content%2Fgrand-media%2Fimage%2Fgrinning_soyjak.png&f=1&nofb=1&ipt=e833b96ac8f1c268763b00013dfde9dcef23f7541fc5db69b6c82ba5d08ef510">
+</head>
+<body class="example animate__animated animate__fadeIn animate__duration-4s animate__delay-0.5s">
+
+   
+    <header class="text-white text-center py-3">
+        <h1>SEMESTR X NAZWA_PRZEDMIOTU</h1>
+    </header>
+
+
+    <section id="o-nas" class="container my-4">
+        <h2 class="text-center">Wybór pytań NAZWA_PRZEDMIOTU</h2>
+        <div class="wyb0 row justify-content-center" >
+            <a class="wybor container text-center col p-5 m-4 border rounded bg-light button" onclick="def()">
+                <div>
+                    Pytania i odpowiedzi
+                </div>
+            </a>
+            <a class="wybor container text-center col p-5 m-4 border rounded bg-light button " onclick="fiszki()">
+                <!-- onclick="fiszki()" -->
+                <div>
+                    Losowe z wyborem    
+                </div>
+            </a>
+        </div>
+        <a href="Fiszki.html"><button class="bbtn btn btn-primary mt-4 container-fluid">Powrót do głównej</button></a>
+    </section>
+    <section id="pytania" class="container my-4 d-none">
+        <button class="btn btn-success mb-4" onclick="reload()">Powrót do wyboru</button>
+        <h2 class="text-center">Pytania i odpowiedzi NAZWA_PRZEDMIOTU</h2>
+        <br>
+        <h3 class="text-center bg-warning border rounded"><b>UWAGA</b> Odpowiedzi pisał <b>BOT</b> więc mogą nie być w 100% poprawne</h3>
+        <br>
+        
+    </section>
+    <section id="fiszki" class="container my-4 d-none">
+        <button class="btn btn-success mb-4" onclick="reload()">Powrót do wyboru</button>
+        <h2 class="text-center" id="fiszkiHead">Fiszki NAZWA_PRZEDMIOTU</h2>
+        <div class="text-center mt-4">
+            <div class="PytanieCont">
+                <p id="PytanieFiszka" class="p-3 border rounded bg-light">
+                    Temp pytanie
+                </p>
+            </div>
+      
+        <div id="answers" class="container-l row justify-content-center mt-4 p-3">
+                <div class="ODP col-m p-3 m-3 border rounded  bg-gradient" id="Odp1a">
+                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quo temporibus facilis unde impedit! Impedit aut natus, blanditiis, illo nesciunt porro fugiat doloribus eos vel perferendis, quos explicabo aliquam fuga a?
+                </div>
+                <div class="ODP col-m p-3 m-3 border rounded  bg-gradient" id="Odp2a">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veniam aliquid eum harum. Illum voluptas quia ex nihil velit unde incidunt, odit saepe consectetur doloribus molestias voluptatum, labore alias error facere?
+                </div>
+                <div class="ODP col-m p-3 m-3 border rounded  bg-gradient" id="Odp3a">
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quam reiciendis ipsum ex soluta fuga. Maiores praesentium, earum quas eveniet, provident autem culpa voluptatem obcaecati, expedita porro minima qui commodi quia!
+                </div>
+            </div>
+        </div>
+        <button id="next" class="btn btn-primary mt-4 container-fluid" onclick="GetPytanie()">Następne pytanie</button>
+    </section>
+    
+   
+
+
+     <script>
+        const QA={"Pyt1":"Odp1","Pyt2":"Odp2","Pyt3":"Odp3"};
+        const QAArray = Object.entries(QA).map(([pyt, odp]) => ({ pyt, odp }));
+        const section = document.getElementById("pytania");
+
+        // 3. Iterujemy po wszystkich pytaniach i tworzymy elementy
+        Object.entries(QA).forEach(([question, answer]) => {
+            // Tworzymy div z klasami
+            const div = document.createElement("div");
+            div.classList.add("bg-secondary", "bg-gradient", "pytanie", "p-3", "mb-3", "rounded");
+
+            // Tworzymy nagłówek h3
+            const h3 = document.createElement("h3");
+            h3.textContent = question;
+
+            // Tworzymy paragraf z odpowiedzią
+            const p = document.createElement("p");
+            p.textContent = answer;
+
+            // Dodajemy nagłówek i paragraf do diva
+            div.appendChild(h3);
+            div.appendChild(p);
+
+            // Wstawiamy diva jako child do sekcji
+            section.appendChild(div);
+        });
+
+        function def(){
+            document.getElementById("pytania").classList.remove("d-none");
+            document.getElementById("o-nas").classList.add("d-none");
+        }
+        function fiszki(){
+            document.getElementById("fiszki").classList.remove("d-none");
+            document.getElementById("o-nas").classList.add("d-none");
+            GetPytanie();
+        }
+
+
+
+          // zakładamy, że masz trzy przyciski odpowiedzi w HTML:
+// <button id="Odp1a" class="answer"></button>
+// <button id="Odp2a" class="answer"></button>
+// <button id="Odp3a" class="answer"></button>
+
+const nextBtn = document.getElementById("next");
+
+function GetPytanie() {
+    let temp = [...QAArray]; // kopia tablicy pytań
+
+    // Losowanie pytania
+    let idx = Math.floor(Math.random() * temp.length);
+    let wylosowane = temp[idx];
+    temp.splice(idx, 1);
+
+    // Losujemy dwie złe odpowiedzi
+    let odp1 = temp.splice(Math.floor(Math.random() * temp.length), 1)[0];
+    let odp2 = temp.splice(Math.floor(Math.random() * temp.length), 1)[0];
+
+    // Tworzymy tablicę odpowiedzi
+    let answers = [
+        { text: wylosowane.odp, correct: true },
+        { text: odp1.odp, correct: false },
+        { text: odp2.odp, correct: false }
+    ];
+
+    // Mieszamy odpowiedzi
+    answers.sort(() => Math.random() - 0.5);
+
+    // Wstawiamy do przycisków
+    const buttons = [
+        document.getElementById("Odp1a"),
+        document.getElementById("Odp2a"),
+        document.getElementById("Odp3a")
+    ];
+
+    buttons.forEach((btn, i) => {
+        btn.innerText = answers[i].text;
+        btn.disabled = false;
+        btn.classList.remove("correct", "wrong");
+        btn.onclick = () => handleAnswer(answers[i], buttons, answers);
+    });
+
+    // Wstawiamy pytanie
+    document.getElementById("PytanieFiszka").innerText = wylosowane.pyt;
+
+    // Blokujemy next na razie
+    document.getElementById("next").disabled = true;
+}
+
+function handleAnswer(selected, buttons, answers) {
+    if(selected.correct){
+        buttons[answers.indexOf(selected)].classList.add("correct");
+    } else {
+        buttons[answers.indexOf(selected)].classList.add("wrong");
+        // zaznacz poprawną
+        let correctBtn = buttons[answers.findIndex(a => a.correct)];
+        correctBtn.classList.add("correct");
+    }
+
+    // blokujemy wszystkie przyciski
+    buttons.forEach(b => b.disabled = true);
+
+    // odblokowujemy next
+    document.getElementById("next").disabled = false;
+}
+
+
+// Event do przycisku "next"
+nextBtn.onclick = () => {
+    GetPytanie();
+};
+
+
+        function reload(){
+            location.reload();
+        }
+        
+    </script>
+</body>
+</html>
