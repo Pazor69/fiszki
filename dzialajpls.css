@@ -83,16 +83,23 @@ div>ul{
     white-space: break-spaces;
 }
 .correct {
-    background-color: #4CAF50; /* zielony */
+    background-color: #4CAF50 !important; /* zielony */
     color: white;
 }
-
+.correct:hover {
+    background-color: #4CAF50 !important; /* zielony */
+}
 .wrong {
-    background-color: #f44336; /* czerwony */
+    background-color: #f44336 !important; /* czerwony */
+    color: white;
+}
+.wrong:hover {
+    background-color: #f44336 !important; /* czerwony */
     color: white;
 }
 .bbtn{
     color: whitesmoke !important;
 }
+
 
 
