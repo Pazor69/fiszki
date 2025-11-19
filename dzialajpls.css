@@ -65,13 +65,13 @@ div>ul{
     
 }
 .wyb0>.wybor:hover,.ODP:hover{
-    color:#ced4da;
+    color:yellow;
     background-color: #72777c !important;
     transition:background-color 0.5s;
     
 }
 .pytanie{
-    color:silver;
+    color:yellow;
     font-size: large;
     font-weight: 700;
     
@@ -103,6 +103,7 @@ div>ul{
 .generated{
    white-space: pre-wrap;
 }
+
 
 
 
