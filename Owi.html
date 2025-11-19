@@ -45,7 +45,7 @@
         <button class="btn btn-success mb-4" onclick="reload()">Powrót do wyboru</button>
         <h2 class="text-center">Pytania i odpowiedzi OWI</h2>
         <br>
-        <h3 class="text-center bg-warning border rounded"><b>UWAGA</b> Odpowiedzi pisał <b>BOT</b> więc mogą nie być w 100% poprawne</h3>
+        <h3 class="text-center bg-warning border rounded"><b>UWAGA</b> Odpowiedzi częsciowo przepisywał <b>BOT</b> więc mogą nie być w 100% poprawne, dałem z siebie tyle ile mogłem, ale mogło mnie coś minąć</h3>
         <br>
         
     </section>
@@ -78,100 +78,79 @@
 
 
      <script>
-        const QA = {
-    "Własność przemysłowa":
-        "Zespół praw chroniących techniczne i oznaczeniowe aspekty działalności gospodarczej. Obejmuje m.in. wynalazki, znaki towarowe, wzory użytkowe, wzory przemysłowe, oznaczenia geograficzne oraz topografie układów scalonych. Celem jest umożliwienie przedsiębiorcom ochrony innowacji i wyróżników rynkowych przed kopiowaniem.",
-
-    "Przedsiębiorstwo":
-        "Zorganizowany majątek obejmujący środki materialne (maszyny, nieruchomości) oraz niematerialne (marka, licencje, pracownicy, know-how), który służy prowadzeniu działalności gospodarczej. Jest traktowane jako całość zdolna do funkcjonowania na rynku.",
-
-    "Własność intelektualna":
-        "Ogół praw chroniących wytwory ludzkiego intelektu — od utworów artystycznych i naukowych po rozwiązania techniczne, oznaczenia oraz wiedzę. Dzieli się na prawo autorskie i własność przemysłową. Dzięki niej twórca lub przedsiębiorca może kontrolować i zarabiać na swoim dziele lub innowacji.",
-
-    "Prawa osobiste":
-        "Niemajątkowe, niezbywalne prawa twórcy, które trwają bezterminowo. Chronią więź twórcy z utworem, np. prawo do autorstwa, decydowania o udostępnieniu utworu, integralności formy i treści. Nikt nie może ich kupić ani ograniczyć.",
-
-    "Prawa majątkowe":
-        "Prawa pozwalające na ekonomiczne korzystanie z utworu: jego zwielokrotnianie, rozpowszechnianie, sprzedaż licencji. Mogą być dziedziczone, przenoszone i wygasają po upływie określonego czasu (zwykle 70 lat po śmierci autora).",
-
-    "Wynalazek – definicja i cechy":
-        "Nowe, praktyczne i nieoczywiste rozwiązanie techniczne, które rozwiązuje określony problem. Musi spełniać trzy warunki: nowość, poziom wynalazczy i przemysłową stosowalność. Nie może dotyczyć wyłącznie teorii lub idei — musi mieć konkretne zastosowanie techniczne.",
-
-    "Patent":
-        "Prawo przyznawane przez urząd patentowy, dające wyłączność na korzystanie z wynalazku w sposób zawodowy i zarobkowy na terytorium danego kraju przez maks. 20 lat. Umożliwia zakazywanie innym produkcji, sprzedaży i importu rozwiązań opartych na opatentowanej technologii.",
-
-    "Znak towarowy":
-        "Każde oznaczenie zdolne odróżnić towary lub usługi jednego przedsiębiorcy od innych. Może to być słowo, logo, kolor, dźwięk, kształt czy nawet animacja. Kluczową cechą jest zdolność odróżniająca — odbiorca musi kojarzyć znak z konkretnym źródłem pochodzenia.",
-
-    "Oznaczenia geograficzne":
-        "Nazwy lub symbole wskazujące, że dany produkt pochodzi z określonego regionu, a jego szczególne cechy wynikają z tego pochodzenia — np. tradycji, warunków naturalnych. Chronią lokalne produkty przed nadużyciami i podrabianiem.",
-
-    "Topografia układu scalonego":
-        "Twórczy układ elementów elektronicznych i połączeń w chipie, mający formę trójwymiarowego projektu płytki. Z uwagi na wysoki nakład pracy twórczej podlega specjalnej ochronie prawnej, niezależnej od patentowania.",
-
-    "Utwór":
-        "Twórczy, indywidualny efekt działalności człowieka, ustalony w jakiejkolwiek postaci — także nieukończonej. Chroniony jest wyłącznie przejaw twórczości, a nie pomysły czy koncepcje. Utwór musi mieć choć minimalny poziom kreatywności.",
-
-    "Poziom wynalazczy":
-        "Wynalazek musi różnić się od stanu techniki w sposób nieoczywisty dla specjalisty w danej dziedzinie. Innymi słowy, fachowiec nie może stwierdzić: „to banalne, każdy by na to wpadł”.",
-
-    "Uprawnienia po przyznaniu patentu":
-        "Patent daje właścicielowi prawo do wyłącznej eksploatacji wynalazku oraz do egzekwowania zakazu wobec naruszycieli. Może też udzielać licencji, sprzedać patent lub wykorzystać go jako wkład do spółki.",
-
-    "Co nie jest wynalazkiem":
-        "Teorie, odkrycia, modele matematyczne — brak zastosowania technicznego.\nProgramy komputerowe „jako takie” — chroni je prawo autorskie, nie patent.\nMetody organizacyjne, biznesowe, regulaminy — nie rozwiązują problemu technicznego.\nWytwory o charakterze jedynie estetycznym — podlegają ochronie wzorów, nie patentów.",
-
-    "Funkcje znaku towarowego":
-        "Odróżniająca – wskazuje źródło pochodzenia towaru.\nGwarancyjna – kojarzy produkt z określoną jakością.\nReklamowa – buduje markę i wpływa na wybory konsumenta.\nInwestycyjna – zwiększa wartość przedsiębiorstwa.",
-
-    "Wymogi zdolności odróżniającej":
-        "Znak musi być postrzegalny, oryginalny na tyle, by jednoznacznie wskazywać przedsiębiorcę. Nie może być opisowy (np. „Mleko” na mleko) ani stać się nazwą powszechną.",
-
-    "Klasyfikacja znaków towarowych – rodzaje oznaczeń":
-        "Słowne, graficzne, słowno-graficzne, przestrzenne, kolorystyczne, dźwiękowe, ruchome, holograficzne, pozycyjne, multimedialne, dotykowe.",
-
-    "Funkcje oznaczeń geograficznych":
-        "Gwarantują pochodzenie, wspierają marketing produktu, chronią przed fałszerstwami, zachowują lokalne tradycje i podnoszą wartość rynkową produktów regionalnych.",
-
-    "Klasyfikacja oznaczeń geograficznych":
-        "PDO – chroniona nazwa pochodzenia\nPGI – chronione oznaczenie geograficzne\nTSG – gwarantowana tradycyjna specjalność (pośrednio powiązana)",
-
-    "Rodzaje utworów":
-        "Literacki (artykuł, opowiadanie, scenariusz)\nMuzyczny (piosenka, kompozycja instrumentalna)\nPlastyczny (malarstwo, rzeźba, grafika)\nAudiowizualny (film, animacja)\nProgram komputerowy (kod źródłowy i wynikowy)",
-
-    "Autorskie prawa osobiste – katalog":
-        "Prawo do autorstwa, do oznaczenia nazwiskiem/pseudonimem, do nienaruszalności treści i formy, do rzetelnego wykorzystania, do decydowania o pierwszym udostępnieniu, nadzoru autorskiego nad eksploatacją utworu.",
-
-    "Prawa autorskie w dydaktyce":
-        "Dozwolony użytek edukacyjny pozwala na korzystanie z fragmentów utworów lub całych utworów (jeśli to konieczne) w szkołach i uczelniach, bez zgody autora, ale z obowiązkiem podania źródła. Nie dotyczy to działań komercyjnych.",
-
-    "Wyłączenia spod prawa autorskiego":
-        "Ustawy, rozporządzenia i inne akty urzędowe\nDokumenty urzędowe (np. orzeczenia, decyzje)\nSymbole państwowe i znaki urzędowe\nProste komunikaty prasowe pozbawione twórczości\nIdee, metody, procedury, algorytmy jako koncepty",
-
-    "Klasyfikacja znaków – według rejestracji":
-        "Zarejestrowane — pełna ochrona;\n niezarejestrowane — ochrona ograniczona, głównie przez prawo konkurencji.",
-
-    "Klasyfikacja znaków – według podmiotu":
-        "Indywidualne – jednego przedsiębiorcy\nWspólne – organizacji lub zrzeszeń\nGwarancyjne – używane przez wielu, kontrolowane przez podmiot certyfikujący",
-
-    "Klasyfikacja znaków – według odróżnialności":
-        "Fantazyjne (najsilniejsze, np. „Kodak”)\nArbitralne (słowo bez związku z produktem)\nSugestywne (podpowiadające cechę)\nOpisowe (słaba lub brak ochrony)\nRodzajowe (brak możliwości ochrony)",
-
-    "Wynagrodzenie za wynalazek":
-        "Wynalazca: otrzymuje wynagrodzenie adekwatne do zysków z wynalazku, a także jest wskazywany jako twórca.\nPrzedsiębiorca: nabywa prawa majątkowe, może patent komercjalizować, udzielać licencji i w pełni eksploatować wynalazek.",
-
-    "Kiedy wynalazek jest nowy?":
-        "Gdy przed datą zgłoszenia nie był publicznie dostępny — w żadnej formie: publikacji, prezentacji, sprzedaży, wykładu.",
-
-    "Kiedy nadaje się do przemysłowego stosowania?":
-        "Gdy istnieje możliwość jego realnego i powtarzalnego wdrożenia w przemyśle, produkcji, usługach lub rolnictwie.",
-
-    "Kiedy nie udziela się patentów mimo spełnienia warunków?":
-        "Gdy wynalazek narusza porządek publiczny lub moralność, dotyczy metod leczenia, odmian roślin i ras zwierząt albo dotyczy procesów biologicznych nie będących procesami technicznymi.",
-
-    "Dlaczego chronić własność intelektualną? Zagrożenia":
-        "Korzyści: budowanie przewagi konkurencyjnej, zabezpieczenie inwestycji, licencjonowanie, zwiększenie wartości firmy, ochrona reputacji i marki. Zagrożenia: wysokie koszty ochrony, konieczność monitorowania naruszeń, ryzyko sporów prawnych, ujawnienie rozwiązania w dokumentacji patentowej."
+  const QA = {
+"Własność przemysłowa":
+`Własność przemysłowa jest rodzajem prawa wyłącznego. Jej pełne zdefiniowanie następuje przez odwołanie do aktów normatywnych:\nstanowi część praw własności intelektualnej (obok patentów, znaków towarowych, praw autorskich) zgodnie z art. 1 ust. 1 pkt h Rozporządzenia Komisji (UE) 316/2014,\nna gruncie konwencji paryskiej obejmuje m.in. patenty, wzory użytkowe, rysunki i modele przemysłowe, nazwę handlową, oznaczenia pochodzenia i znaki,\n– na gruncie prawa polskiego obejmuje: wynalazki, wzory użytkowe, wzory przemysłowe, topografie układów scalonych, znaki towarowe, oznaczenia geograficzne i projekty racjonalizatorskie.`,
+"Przedsiębiorstwo":
+`Zorganizowany zespół składników niematerialnych i materialnych przeznaczonych do prowadzenia działalności gospodarczej" (art. 551 k.c.).`,
+" Czym jest własność intelektualna":
+`Własność intelektualna to:
+– "produkt umysłu ludzkiego",
+– materializacja oryginalnych treści myślowych,
+– element kapitału przedsiębiorstwa lub osoby fizycznej,
+– "zespół norm regulujących zachowania wobec indywidualnych przejawów umysłu ludzkiego".` ,
+"Prawa osobiste":
+`Prawa nieograniczone w czasie, niezbywalne, stanowią więź twórcy z utworem.\nObejmują m.in.:\nprawo do autorstwa,\nprawo do oznaczenia nazwiskiem, pseudonimem lub anonimowo,\nprawo do nienaruszalności formy i treści,\nprawo do pierwszej publikacji,\nprawo nadzoru nad korzystaniem.`,
+"Prawa majątkowe":
+`Podlegają zbyciu, zrzeczeniu, dziedziczeniu; ograniczone w czasie i terytorium, dotyczą korzystania z prawa wyłącznego.`,
+"Definicja i cechy wynalazku":
+`"Nie istnieje definicja wynalazku", ale cechy:\nnowe w skali światowej,\nposiadające poziom wynalazczy,\nnadające się do przemysłowego stosowania,\ntwórcze, kompletne, nieujęte w stanie techniki,\nnieujawnione przed zgłoszeniem.`,
+"Patent – definicja":
+`Patent daje "prawo wyłącznego korzystania z wynalazku w sposób zarobkowy lub zawodowy", trwa 20 lat, a zakres określają zastrzeżenia patentowe.`,
+"Znak towarowy":
+`"Każde oznaczenie umożliwiające odróżnienie towarów jednego przedsiębiorstwa od towarów innego oraz możliwe do przedstawienia w rejestrze w sposób jednoznaczny i dokładny".`,
+"Oznaczenia geograficzne":
+`Są to oznaczenia słowne odnoszące się bezpośrednio lub pośrednio do nazwy miejsca, miejscowości, regionu lub kraju (teren), które identyfikują towar jako pochodzący z tego terenu, jeżeli określona jakość, dobra opinia lub inne cechy towaru są przypisywane przede wszystkim pochodzeniu geograficznemu tego towaru [art. 174 p.w.p.] \n( Powyższa definicja odnosi się do oznaczenia kwalifikowanego !!!)`,
+"Topografia układu scalonego":
+`Jest to rozwiązanie polegające na przestrzennym, wyrażonym w dowolny sposób, rozplanowaniu elementów, z których co najmniej jeden jest elementem aktywnym, oraz wszystkich lub części połączeń układu scalonego [art. 196 ust. 1 p.w.p] 
+Przez układ scalony rozumie się jedno- lub wielowarstwowy wytwór przestrzenny, utworzony z elementów z materiału półprzewodnikowego tworzącego ciągłą warstwę, ich wzajemnych połączeń przewodzących i obszarów izolujących, nierozdzielnie ze sobą sprzężonych, w celu spełniania funkcji elektronicznych [art. 196 ust. 2 p.w.p] 
+"są to miniaturowe układy elektroniczne charakteryzujące się tym, że ich elementy wraz z połączeniem między nimi wytworzone są w jednym cyklu technologicznym, wewnątrz lub na powierzchni wspólnego podłoża"`,
+"Utwór":
+`To każdy przejaw działalności twórczej o indywidualnym charakterze, ustalony w jakiejkolwiek postaci, niezależnie od wartości, przeznaczenia i sposobu wyrażenia.`,
+"Poziom wynalazczy":
+`Dla znawczy (fachowca o przeciętnej wiedzy z danej dziedziny) nie wynika w sposób oczywisty ze stanu techniki\nStanowi zaskoczenie dla znawcy przedmiotu\n Nie spełnia poziomu wynalazczego rozwiązanie polegające na rutynowym dostosowaniu znanego rozwiązania lub oczywistym skojarzeniu kilku znanych rozwiązań `,
+"Uprawnienia po przyznaniu patentu":
+`Patent daje właścicielowi prawo do wyłącznej eksploatacji wynalazku oraz do egzekwowania zakazu wobec naruszycieli. Może też udzielać licencji, sprzedać patent lub wykorzystać go jako wkład do spółki.`,
+" Co nie jest wynalazkiem – 4 przykłady":
+`1. odkrycia, teorie naukowe, metody matematyczne,\n2. wytwory o charakterze estetycznym,\n3. schematy i zasady działania gier lub działalności gospodarczej,\n4. programy komputerowe,\n5. przedstawienia informacji.`,
+"Funkcje znaku towarowego":
+`– odróżniająca: odróżnienie danych towarów od towarów tego samego rodzaju, określenie tożsamości towarów (lub usług) pochodzących od konkretnego przedsiębiorstwa,\n– gwarancyjna (jakościowa): przekazywanie informacji o cechach jakościowych towaru; informacja, że wszystkie towary oznaczone tym znakiem mają ten sam poziom cech jakościowych,\n– reklamowa: zachęcanie do wyboru towaru (usługi) oznaczonego tym znakiem.`,
+"Wymogi zdolności odróżniającej":
+`-Zmysłowa postrzegalność oznaczenia: zmysł wzroku, słuchu i dotyku (potencjalnie także węchu i smaku),\n-Jednolitość oznaczenia: możliwe w całości do objęcia jednym aktem poznawczym,\nSamodzielność znaku towarowego względem towaru: odrębność od towaru (fizyczna a przynajmniej pojęciowa),\nGraficzna przedstawialność: językiem obrazu, linii, znaków.\n\n#jakby ktoś się zastanawial sam sprawdziłem ta odpowiedz i tak jest w prezentacji, to nie jest inwencja tworcza bota`,
+"Klasyfikacja znaków ze względu na oznaczenia":
+`-Znaki towarowe słowne: m.in. imiona, nazwiska, pseudonimy, nazwy historyczne, litery i ich kombinacje, cyfry i ich kombinacje, nazwy geograficzne, slogany reklamowe, nazwy przedsiębiorstw, określenia "fantazyjne", i inne,\n-Znaki towarowe graficzne: fantazyjna grafika, kompozycja kolorystyczna,\-nZnaki towarowe przestrzenne: forma towaru lub jego opakowania, różne formy przestrzenne,\n-Znaki towarowe kombinowane: np. słowno-graficzne, graficzno- przestrzenne,\n-Znaki towarowe niekonwencjonalne: znaki dźwiękowe, znaki zapachowe, znaki smakowe, znaki dotykowe, znaki animowane (ruchome obrazy), znaki stanowiące nieograniczone przestrzennie kombinacje kolorystyczne, hologramy.`,
+"Funkcje oznaczeń geograficznych":
+`-Funkcja informacyjna (najważniejsza) informowanie odbiorców o pochodzeniu towarów ze wskazanego rejonu geograficznego,\n-Funkcja odróżniająca odróżnianie towarów pochodzących z określonego miejsca geograficznego od innych towarów tego samego rodzaju, pochodzących z innych obszarów geograficznych,\n-Funkcja reklamowa zachęcanie do wyboru towaru  oznaczonego tym znakiem. \n-Funkcja gwarancyjna wskazywanie na określoną jakość i cechy charakterystyczne towaru, które zawdzięcza on miejscu pochodzenia (dotyczy to tylko kwalifikowanych oznaczeń geograficznych).`,
+"Klasyfikacja oznaczeń geograficznych":
+`Oznaczenia zwykłe (proste) i kwalifikowane (ochronie podlegają tylko kwalifikowane) 
+zwykłe – wskazują tylko na pochodzenie geograficzne towaru, nie odnoszą się do jego jakości, renomy,\n-kwalifikowane – odnoszą się do jakości towaru wynikającej z jego pochodzenia geograficznego,\n-Oznaczenia bezpośrednie i pośrednie (jedne i drugie podlegają ochronie) ,\n-bezpośrednie – zawierają nazwy geograficzne (forma przymiotnikowa lub rzeczownikowa), np. "obwarzanek krakowski", "bryndza podhalańska" ,\n-pośrednie – nie zawierają nazw geograficznych ale zawierają elementy łączące dany towar z konkretnym miejscem geograficznym, np. "oscypek", "rogal Świętomarciński" ,\n-Oznaczenia słowne, słowno-graficzne i graficzna forma towaru lub jego opakowania, różne formy przestrzenne (ochronie podlegają tylko słowne)`,
+"Przykłady rodzajów utworów (5)":
+`1) wyrażone słowem, symbolami matematycznymi, znakami graficznymi (literackie, publicystyczne, naukowe, kartograficzne oraz programy komputerowe),\n2) plastyczne,\n3) fotograficzne,\n4) muzyczne i słowno-muzyczne,\n5) sceniczne, sceniczno-muzyczne, choreograficzne i pantomimiczne, ,\n-6) audiowizualne (w tym filmowe).`,
+"Autorskie prawa osobiste – katalog":
+`– autorstwo,\n– oznaczenie nazwiskiem/pseudonimem/anonimowo,\n– nienaruszalność treści i formy,\n– rzetelne wykorzystanie,\n– pierwsza publikacja,\n– nadzór nad korzystaniem.`,
+"Prawa autorskie a wykorzystanie utworów w dydaktyce":
+`Szkoła /instytucja oświatowa/ może korzystać 
+z utworów w celach dydaktycznych (tzw użytek szkolny) na szczególnych zasadach. Uprawnienia te mieszczą się w tzw. dozwolonym użytku publicznym – jest ustawowe zezwolenie na korzystanie z utworów dla realizacji określonych celów, np. celu dydaktycznego przez określone podmioty, tym instytucje oświatowe. Polega na wykorzystywaniu cudzego utworu (książki, artykułu, filmu, muzyki itd.) bez potrzeby uzyskania zezwolenia jego autora i bez stosownej opłaty.`,
+"Co jest wyłączone z praw autorskich – 5 przykładów":
+`1) akty normatywne lub ich urzędowe projekty,\n2) urzędowe dokumenty, materiały, znaki i symbole,\n3) opublikowane opisy patentowe lub ochronne,\n4) proste informacje prasowe.\n5) koncepcja, np: przepis na bigos`,
+"Klasyfikacja znaków towarowych ze względu na uzyskanie rejestracji":
+`Znak towarowy krajowy: rejestrowane przez właściwy urząd krajowy (np. Urząd Patentowy RP)\nZnak towarowy wspólnotowy: rejestracja w Urząd Patentowy UE w Alicante ze skutkiem na całą UE (na podstawie rozporządzenia nr 207/2009)\nZnak towarowy międzynarodowy: rejestracja w Biurze WIPO w Genewie ze skutkiem w różnych państwach w tzw. trybie madryckim (Porozumienie madryckie z 1891 r. i protokół do Porozumienie madryckiego z 1989 r.).`,
+"Klasyfikacja znaków — według podmiotu uprawnionego":
+`Znak towarowy indywidualny: rejestrowany na rzecz jednego podmiotu,\nZnak towarowy, na który zostało udzielone wspólne prawo ochronne: rejestrowany na rzecz wielu przedsiębiorców,\nZnak towarowy wspólny: rejestrowany tylko na rzecz organizacji reprezentującej zrzeszonych w niej przedsiębiorców (uprawnieni – zarówno organizacja jak i przedsiębiorcy),\nZnak towarowy wspólny gwarancyjny: rejestrowany tylko na rzecz organizacji reprezentującej zrzeszonych w niej przedsiębiorców (uprawnieni – tylko przedsiębiorcy)`,
+"Klasyfikacja znaków — według stopnia zdolności odróżniającej":
+`Znak towarowy zwykły: posiada dostateczną (wystarczającą) zdolność odróżniającą,\nZnak towarowy renomowany: ponadprzeciętnie znany wśród znaczącej liczby właściwych odbiorców na znaczącej części właściwego terytorium,\nZnak towarowy powszechnie znany: stopień znajomości wśród nabywców jest wyższy niż renomowanego znaku towarowego (znajomość wśród ponad 50% właściwych odbiorców),\nZnak towarowy sławny: "elita" znaków, najsilniejsze, najbardziej znane znaki towarowe.`,
+"Wynagrodzenie wynalazca vs. Przedsiębiorca":
+`Twórca ma prawo do:\n– uzyskania patentu,\n– wynagrodzenia,\n– wymienienia go jako twórcy.\nPrzedsiębiorca – jeśli brał udział w badaniach – ma prawo do używania wynalazku.`,
+"Kiedy wynalazek jest nowy?":
+`Gdy "nie jest częścią stanu techniki", czyli gdy nie został wcześniej udostępniony publicznie w żadnej formie.`,
+"Kiedy wynalazek nadaje się do przemysłowego stosowania?":
+`Gdy może być uzyskany wytwór lub wykorzystany sposób w działalności przemysłowej, także w rolnictwie.`,
+"Kiedy nie udziela się patentów mimo spełnienia warunków?":
+`1) wynalazki, których wykorzystywanie byłoby sprzeczne z porządkiem publicznym lub dobrymi obyczajami,\n2) odmiany roślin lub rasy zwierząt oraz czysto biologiczne sposoby hodowli roślin lub zwierząt(np. krzyżowanie), a także wytwory uzyskiwane takimi sposobami,\n3) sposoby leczenia ludzi i zwierząt metodami chirurgicznymi lub terapeutycznymi oraz sposoby diagnostyki stosowane na ludziach lub zwierzętach.`,
+"Dlaczego opłaca się chronić własność intelektualną i jakie są zagrożenia?":
+`Osiągnięcia człowieka w sferze wartości niematerialnych są pochodną nakładu pracy i środków, a także kreatywności i talentu przy uwzględnieniu aktualnego stanu wiedzy, sprzężone z potencjałem produkcyjnym przedsiębiorstwa stanowią o sile danego podmiotu na rynku. \n Aby to zapewnić niezbędna jest ochrona innowacyjności i maksymalne wykorzystanie pierwszeństwa wprowadzenia danego produktu na rynek. Oczywiste jest, że brak ochrony powyższych wartości skutkować może szybkim naśladownictwem produktów przez podmioty konkurencyjne i udaremnieniem strategicznych planów danego przedsiębiorstwa, a nawet grozić może wygenerowaniem znacznych strat.`
 };
+
 
        const QAArray = Object.entries(QA).map(([pyt, odp]) => ({ pyt, odp }));
         const section = document.getElementById("pytania");
@@ -188,6 +167,7 @@
 
             // Tworzymy paragraf z odpowiedzią
             const p = document.createElement("p");
+            p.classList.add("generated");
             p.textContent = answer;
 
             // Dodajemy nagłówek i paragraf do diva
