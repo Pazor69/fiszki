@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Template fiszek</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+   <link rel="stylesheet" href="dzialajpls.css">
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
+  
+  <link href='https://fonts.googleapis.com/css?family=Anton' rel='stylesheet'>
+  <link rel="icon" href="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwojakland.com%2Fwp-content%2Fgrand-media%2Fimage%2Fgrinning_soyjak.png&f=1&nofb=1&ipt=e833b96ac8f1c268763b00013dfde9dcef23f7541fc5db69b6c82ba5d08ef510">
+</head>
+<body class="example animate__animated animate__fadeIn animate__duration-4s animate__delay-0.5s">
+
+   
+    <header class="text-white text-center py-3">
+        <h1>SEMESTR 1 PZiP</h1>
+    </header>
+
+
+    <section id="o-nas" class="container my-4">
+        <h2 class="text-center">Wybór pytań PZiP</h2>
+        <div class="wyb0 row justify-content-center" >
+            <a class="wybor container text-center col p-5 m-4 border rounded bg-light button" onclick="def()">
+                <div>
+                    Pytania i odpowiedzi
+                </div>
+            </a>
+            <a class="wybor container text-center col p-5 m-4 border rounded bg-light button " onclick="fiszki()">
+                <!-- onclick="fiszki()" -->
+                <div>
+                    Losowe z wyborem    
+                </div>
+            </a>
+        </div>
+        <a href="Fiszki.html"><button class="bbtn btn btn-primary mt-4 container-fluid">Powrót do głównej</button></a>
+    </section>
+    <section id="pytania" class="container my-4 d-none">
+        <button class="btn btn-success mb-4" onclick="reload()">Powrót do wyboru</button>
+        <h2 class="text-center">Pytania i odpowiedzi PZiP</h2>
+        <br>
+        <h3 class="text-center bg-warning border rounded d-none"><b>UWAGA</b> Odpowiedzi pisał <b>BOT</b> więc mogą nie być w 100% poprawne</h3>
+        <br>
+        
+    </section>
+    <section id="fiszki" class="container my-4 d-none">
+        <button class="btn btn-success mb-4" onclick="reload()">Powrót do wyboru</button>
+        <h2 class="text-center" id="fiszkiHead">Fiszki PZiP</h2>
+        <div class="text-center mt-4">
+            <div class="PytanieCont">
+                <p id="PytanieFiszka" class="p-3 border rounded bg-light">
+                    Temp pytanie
+                </p>
+            </div>
+      
+        <div id="answers" class="container-l row justify-content-center mt-4 p-3">
+                <div class="ODP col-m p-3 m-3 border rounded  bg-gradient" id="Odp1a">
+                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quo temporibus facilis unde impedit! Impedit aut natus, blanditiis, illo nesciunt porro fugiat doloribus eos vel perferendis, quos explicabo aliquam fuga a?
+                </div>
+                <div class="ODP col-m p-3 m-3 border rounded  bg-gradient" id="Odp2a">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veniam aliquid eum harum. Illum voluptas quia ex nihil velit unde incidunt, odit saepe consectetur doloribus molestias voluptatum, labore alias error facere?
+                </div>
+                <div class="ODP col-m p-3 m-3 border rounded  bg-gradient" id="Odp3a">
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quam reiciendis ipsum ex soluta fuga. Maiores praesentium, earum quas eveniet, provident autem culpa voluptatem obcaecati, expedita porro minima qui commodi quia!
+                </div>
+            </div>
+        </div>
+        <button id="next" class="btn btn-primary mt-4 container-fluid" onclick="GetPytanie()">Następne pytanie</button>
+    </section>
+    
+   
+
+
+     <script>
+        const QA = {
+    "Czym jest zarządzanie, kierowanie, administrowanie, rządzenie; z przykładami":
+    `Zarządzanie- zestaw działań skierowany na zasady organizacji i wykonany z zamiarem osiągniecia celów organizacji w sposób sprawny i skuteczny(Przykład: dyrektor, prezes firmy).\nKierowanie- wpływanie na ludzi aby realizowali zadania(Przykład: Kierownik działu, logistyk).\nAdministrowanie- wykonywanie ustalonych procedur i utrzymanie porządku organizacyjnego(Przykład: Urząd miasta, administrator sieci).\nZarządzanie- sprawowanie władzy i podejmowanie decyzji politycznych(Przykład: Premier, Burmistrz)`,
+    "Jakie są funkcje zarządzania? z przykładami":
+    `Planowanie- Przygotowanie budżetu firmy\nZorganizowanie- podział obowiązków w zespole\nMotywowanie- nagradzanie pracowników za dobre wyniki\nKontrolowanie- kontrola jakości produktów`,
+    "Czym jest planowanie jako funkcja zarządzania?":
+    `Jest to wytyczanie celów organizacji i określenie najlepszego sposobu ich osiągniecia, częścią tego procesu jest podejmowanie decyzji polegającej na wyborze określonego sposobu działania spośród różnych alternatyw.`,
+    "Czym jest organizowanie jako funkcja zarządzania?":
+    `Jest to logiczne grupowanie działań i zasobów, organizacja przyczynia się do podniesienia sprawności organizacji.`,
+    "Na czym polega motywowanie jako funkcja zarządzania?":
+    `Polega na kierowaniu ludźmi, w taki sposób aby identyfikowali się z celami organizacji, zarazem współpracując w ich osiągnięciu.`,
+    "Na czym poelga kontrolowanie jako funkcja zarządzania?":
+    `Polega na obserwowaniu postępów organizacji w realizowaniu jej celów, dopełniając zarządzanie. Obejmuje:\n-Określenie mierników efektywności\n-Pomiar bieżącej efektywności\n-Porównanie wyników z założeniami\n-Wprowadzenie działań korygujących`,
+    "Czym jest kultura organizacji? Jakie czynniki na nią wpływają?":
+    `Jest to system wartości, norm i zachowań w firmie\nWpływają na nią: historia firmy, liderzy, struktura, komunikacja, pracownicy, otoczenie.`,
+    "Co zakłada teoria X i teoria Y McGregora?":
+    `Teoria X- pracownicy nie są chętni do pracy, starają się jej unikać, wolą aby nimi kierowano, pragną bezpieczeństwa i unikają odpowiedzialności. Przez ich niechęć do pracy, kierownicy muszą stosować kontrolę i groźby kar.\nTeoria Y- pracownicy są z natury chętni do pracy, są kreatywni i odpowiedzialni. Kierownicy powinni tworzyć warunki sprzyjające samodzielności i rozwojowi pracowników. Pracownik chętnie wykonuje swoje obowiązki, ponieważ widzi ich skutki i odpowiedzialność za nie.`,
+    "Jakie są założenia i kolejność potrzeb w piramidzie Maslowa?":
+    `-Piwo #żart\n-Potrzeby fizjologiczne\n-Bezpieczeństwo\n-Przynależność\n-Uznanie\n-Szacunek\n-Samorealizacja\n-Wiedza i zrozumienie`,
+    "Jakie są 3 główne style kierowania?":
+    `Styl naukowy,\nStyl wspierający,\nStyl partycypacyjny`,
+    "Jakie elementy tworzą mikrootoczenie?":
+    `dostawwcy, klienci, konkurencja, pośrednicy, instytucje finansowe, społeczność`,
+    "Jakie czynniki tworzą makrootoczenie?":
+    `-Polityczne,\n-Prawne,\n-Ekonomiczne,\n-Społeczno-kulturowe,\n-Technologiczne,\n-Środowiskowe,\n-Międzynarodowe`,
+    "Na czym polega analiza SWOT? Wyjaśnij skrót":
+    `Polega na systematycznej ocenie, aby sformułować strategie działania.\nS- Strengths (Mocne strony)\nW- Weaknesses (Słabe strony)\nO- Opportunities (Szanse)\nT- Threats (Zagrożenia)`,
+    "Na czym polega analiza PEST? Wyjaśnij skrót":
+    `Polega na badnaniu makrootoczenia firmy oceniając wpływ czynników na jej działaność.\nP- Political (Polityczne)\nE- Economic (Ekonomiczne)\nS- Social (Społeczno-kulturowe)\nT- Technological (Technologiczne)`,
+    "Na czym polega analiza PESTEL? Wyjaśnij skrót":
+    `Polega na badaniu sześciu obszarów wpływających na firmę.\nP- Political (Polityczne)\nE- Economic (Ekonomiczne)\nS- Social (Społeczno-kulturowe)\nT- Technological (Technologiczne)\nE- Environmental (Środowiskowe)\nL- Legal (Prawne)`,
+    "Co ilustruje model Portera? Jakie siły w nim występują?":
+    `Ilustruje poziom konkurencyjności w danej branży oraz jej atraktywność.\n-Siła przetargowa dostawców\n-Siła przetargowa nabywców\n-Zagrożenie ze strony nowych uczestników rynku\n-Zagrożenie ze strony substytutów\n-Rywalizacja wśród istniejących konkurentów`,
+    "Jakie są rodzaje wiedzy?":
+    `Jawna(dokumenty, procedury),\nUkryta(doświadczenie, umiejętności),\nIndywidualna,\nOrganizacyjna`,
+    "Czym jest formalizacja, czym biurokracja, a czym biurokratyzm?":
+    `Formalizacja- ustalenie zasad, procedur, regulaminów, aby działania były uporządkowane.\nBiurokracja- uporządkowoany system zarzadzania oparty na zasadach, podziale pracy hierarchii.\nBiurokratyzm(patologiczna forma biurokracji)-oznacza niesprawne i bezduszne działanie urzędów, wynikające ze zbyt sztywnego trzymania się zasad i procedur.`,
+    "Prosze wybrać jedną z 14 zasad H. Fayola i ją opisać.":
+    `Zasada jednośći rozkazodawstwa- Pracownik powinien otrzymywać polecenie tylko od jendego przełożonego, aby uniknąć konfliktu poleceń i nieporozumień.\nZasada podziału pracy: Lepsze rezultaty osiąga się, gdy pracownicy specjalizują się w określonych zadaniach, dziedzinach, niszy.`,
+    "Kim mogą być interesariusze organizacji?":
+    `Wszystkie podmioty, które mają wpływ na organizację lub podlegają jej wpływowi, czyli pracownicy, klienci, dostawc.`,
+    "Na czym polega cykl działania zorganizowanego (wg Le Chateliera)?":
+    `Suma działań przybliżających do osiągniecią celu. Polega na ustaleniu celu, zbadania środków, metod oraz warunków, które są potrzebne do jego osiągnięcia.\nCel=>Diagnoza warunków=>Przygotowanie środków=>Realizacja=>Kontrola rezultatów`,
+    "Jakie mogą być rodzaje celów?":
+    `-Strategiczne,\n-Opreacyjne,\n-Ogólne i cząstkowe,\n-Okresowe`,
+    "Co oznacza zasada SMART dla celów?":
+    `Cel jasny, zrozumiały i osiągnięty.\nS- Specific (Sprecyzowany)\nM- Measurable (Mierzalny)\nA- Achievable (Osiągalny)\nR- Relevant (Istotny)\nT- Time-bound (Określony w czasie)`,
+    "Jakie są podstawowe style zarządania?":
+    `-Autokratyczny\n-Demokratyczny\n-Liberalny`,
+    "Jaka jest istota przedsiębiorczośći i kim jest przedsiębiorca?":
+    `To proces tworzenia i rozwijania działalności gospodarczej, polegający na dostrzeganiu i wykorzystywaniu szans.\nJest osobą fizyczną, prawną prowadzącą we własnym imieniu dzałalność gospodarczą.Organizuje zasoby, podejmuje ryzyka i wychwytuje szanse rynkowe w celu osiągnięcia zysku.`,
+    "Czym jest prakseologia?":
+    `To nauka o dobrym działaniu, poszukująca uniwersalnych wzorców działania. Zajmuje się ogólnymi zasadami świadomych i celowych czynności, analizuje efektywność działań.`,
+    "27. Niespodzianka 😁":
+    `27. pewnie bedzię rozpisanie biznes planu na Filiżanex™.\nZa wszystkie krzywdy sam przeproszę Boga\nOne kuszą jak zło-o; biały towar\n(ohooo) Różowa Pantera\nJara je ból, one nie chcą dżentelmena\nZa wszystkie krzywdy sam przeproszę Boga\nOne kuszą jak zło-o; biały towar\n(ohooo) Różowa Pantera\nJara je ból, one nie chcą dżentelmena`
+
+};
+        const QAArray = Object.entries(QA).map(([pyt, odp]) => ({ pyt, odp }));
+        const section = document.getElementById("pytania");
+
+        // 3. Iterujemy po wszystkich pytaniach i tworzymy elementy
+        Object.entries(QA).forEach(([question, answer]) => {
+            // Tworzymy div z klasami
+            const div = document.createElement("div");
+            div.classList.add("bg-secondary", "bg-gradient", "pytanie", "p-3", "mb-3", "rounded");
+
+            // Tworzymy nagłówek h3
+            const h3 = document.createElement("h3");
+            h3.textContent = question;
+
+            // Tworzymy paragraf z odpowiedzią
+            const p = document.createElement("p");
+            p.textContent = answer;
+
+            // Dodajemy nagłówek i paragraf do diva
+            div.appendChild(h3);
+            div.appendChild(p);
+
+            // Wstawiamy diva jako child do sekcji
+            section.appendChild(div);
+        });
+
+        function def(){
+            document.getElementById("pytania").classList.remove("d-none");
+            document.getElementById("o-nas").classList.add("d-none");
+        }
+        function fiszki(){
+            document.getElementById("fiszki").classList.remove("d-none");
+            document.getElementById("o-nas").classList.add("d-none");
+            GetPytanie();
+        }
+
+
+
+          // zakładamy, że masz trzy przyciski odpowiedzi w HTML:
+// <button id="Odp1a" class="answer"></button>
+// <button id="Odp2a" class="answer"></button>
+// <button id="Odp3a" class="answer"></button>
+
+const nextBtn = document.getElementById("next");
+
+function GetPytanie() {
+    let temp = [...QAArray]; // kopia tablicy pytań
+
+    // Losowanie pytania
+    let idx = Math.floor(Math.random() * temp.length);
+    let wylosowane = temp[idx];
+    temp.splice(idx, 1);
+
+    // Losujemy dwie złe odpowiedzi
+    let odp1 = temp.splice(Math.floor(Math.random() * temp.length), 1)[0];
+    let odp2 = temp.splice(Math.floor(Math.random() * temp.length), 1)[0];
+
+    // Tworzymy tablicę odpowiedzi
+    let answers = [
+        { text: wylosowane.odp, correct: true },
+        { text: odp1.odp, correct: false },
+        { text: odp2.odp, correct: false }
+    ];
+
+    // Mieszamy odpowiedzi
+    answers.sort(() => Math.random() - 0.5);
+
+    // Wstawiamy do przycisków
+    const buttons = [
+        document.getElementById("Odp1a"),
+        document.getElementById("Odp2a"),
+        document.getElementById("Odp3a")
+    ];
+
+    buttons.forEach((btn, i) => {
+        btn.innerText = answers[i].text;
+        btn.disabled = false;
+        btn.classList.remove("correct", "wrong");
+        btn.onclick = () => handleAnswer(answers[i], buttons, answers);
+    });
+
+    // Wstawiamy pytanie
+    document.getElementById("PytanieFiszka").innerText = wylosowane.pyt;
+
+    // Blokujemy next na razie
+    document.getElementById("next").disabled = true;
+}
+
+function handleAnswer(selected, buttons, answers) {
+    if(selected.correct){
+        buttons[answers.indexOf(selected)].classList.add("correct");
+    } else {
+        buttons[answers.indexOf(selected)].classList.add("wrong");
+        // zaznacz poprawną
+        let correctBtn = buttons[answers.findIndex(a => a.correct)];
+        correctBtn.classList.add("correct");
+    }
+
+    // blokujemy wszystkie przyciski
+    buttons.forEach(b => b.disabled = true);
+
+    // odblokowujemy next
+    document.getElementById("next").disabled = false;
+}
+
+
+// Event do przycisku "next"
+nextBtn.onclick = () => {
+    GetPytanie();
+};
+
+
+        function reload(){
+            location.reload();
+        }
+        
+    </script>
+</body>
+</html>
