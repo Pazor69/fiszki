@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <title>Losowanie Zadań z Fizyki</title>
+    <style>
+        details {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+        }
+        summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: #0d6efd;
+        }
+        .zadanie-kontener {
+            background: #ffffff;
+            border: 1px dashed #6c757d;
+            border-radius: 8px;
+            padding: 20px;
+        }
+        /* Styl wymuszający margines pod każdym obrazkiem wewnątrz kontenerów */
+        .kontener-grafik img {
+            margin-bottom: 15px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body class="container py-4">
+    <h1 class="display-4 text-center bg-danger text-white">Tresci zadan przepisywal mi BOT, wiec mogl sie pierdolnac, dla pewnosci otworzyc pdf z podanymi zadaniami</h1>
+    <h1 class="display-4 text-center mb-4">Losowanie Zadań</h1>
+    
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-8 text-center">
+            <button onclick="randZad()" class="btn btn-primary btn-lg px-5 mb-4">Losuj Zadanie</button>
+            
+            <div id="widok-zadania" class="zadanie-kontener d-none text-start">
+                <h3>Zadanie #<span id="foto-id"></span></h3>
+                <p id="foto-tresc" class="lead"></p>
+                
+                
+
+                <details class="mt-4">
+                    <summary>Pokaż odpowiedź i obliczenia</summary>
+                    <div class="mt-3">
+                        <div id="foto-rysunki-kontener" class="kontener-grafik d-none">
+                    </div>
+                        <p class="text-muted mb-3"></p>
+                        <div id="foto-odpowiedzi-kontener" class="kontener-grafik">
+                            </div>
+                    </div>
+                </details>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <footer class="text-center mt-4">
+        <h5>Zadania, które zostały w puli:</h5>
+        <p class="lead text-primary" id="zadania"></p>
+    </footer>
+
+    <div class="d-flex justify-content-center gap-2 mt-4 flex-wrap">
+        <button onclick="removeZadanie()" class="btn btn-outline-danger">Usuń konkretne zadanie z puli</button>
+        <button onclick="addZadanie()" class="btn btn-outline-success">Dodaj nowe zadanie do puli</button>
+        <button onclick="resetZadania()" class="btn btn-outline-warning">Resetuj pulę zadań</button>
+        <button onclick="wybierzZadanie()" class="btn btn-outline-primary">Wybierz konkretne zadanie</button>
+    </div>
+
+    <script>
+        // SŁOWNIK ZADAN: Teraz rysunki i odpowiedzi to TABLICE []
+        // Przykład użycia:
+        // - brak rysunku: rysunki: []
+        // - jeden rysunek: rysunki: ["obrazy/rysunek1.jpg"]
+        // - dwa rysunki: rysunki: ["obrazy/rys1_a.jpg", "obrazy/rys1_b.jpg"]
+           const pelnaBazaZadan = [
+             {
+                id: 1,
+                tresc: "<b>ZADANIE 1 rysunek wektory, nazwa ruchów, +rachunek jednostek</b><br>Przy powierzchni Ziemi rzucono poziomo ciało z prędkością v<sub>0</sub>.<br>Znaleźć przyspieszenie styczne a<sub>s</sub> i normalne a<sub>n</sub> po czasie t.",
+                rysunki: ["obrazy/rysunek1.jpg"],
+                odpowiedzi: ["odpowiedzi/odp1.jpg"]
+            },
+            {
+                id: 2,
+                tresc: "<b>ZADANIE 2 rysunek wektory, nazwa ruchów, +rachunek jednostek</b><br>Ciało rzucone pod kątem &alpha; względem powierzchni Ziemi z prędkością początkową v<sub>0</sub> porusza się po torze parabolicznym opisanym równaniami:<br>x = v<sub>0</sub>t cos&alpha;, y = v<sub>0</sub>t sin&alpha; &minus; <div class='d-inline-flex flex-column align-items-center' style='vertical-align: middle;'><div class='border-bottom text-center px-1'>gt<sup>2</sup></div><div class='text-center px-1'>2</div></div><br><br>a) Wyznaczyć współrzędne wektora prędkości<br>b) Wyznaczyć przyspieszenie styczne w dowolnej chwili<br>c) Wyznaczyć przyspieszenie normalne w dowolnej chwili",
+                rysunki: ["obrazy/rysunek2.jpg"],
+                odpowiedzi: ["odpowiedzi/odp2.jpg","odpowiedzi/odp2_1.jpg"]
+            },
+            {
+                id: 3,
+                tresc: "<b>ZADANIE 3 rysunek wektory, nazwa ruchów, +rachunek jednostek</b><br>Z moździerza wystrzelono pocisk z prędkością v<sub>0</sub> <div class='d-inline-flex flex-column align-items-center' style='vertical-align: middle;'><div class='border-bottom text-center px-1'>m</div><div class='text-center px-1'>s</div></div> pod kątem &alpha; do poziomu. Znaleźć równanie toru (y=f(x)). Obliczyć odległość s w jakiej pocisk upadnie na ziemię od miejsca wystrzału oraz czas t lotu pocisku.<br>Opór powietrza pominąć.",
+                rysunki: ["obrazy/rysunek3.jpg"],
+                odpowiedzi: ["odpowiedzi/odp3.jpg","odpowiedzi/odp3_1.jpg"]
+            },
+            {
+                id: 4,
+                tresc: "<b>ZADANIE 4</b><br>Znaleźć prędkość i przyspieszenie w ruchu opisanym równaniami:<br>x = A cos(Bt<sup>2</sup>), y = A sin(Bt<sup>2</sup>)<br>Gdzie A i B to stałe. Znaleźć równanie toru. Jaki to jest ruch ?",
+                rysunki: ["obrazy/rysunek4.jpg"],
+                odpowiedzi: ["odpowiedzi/odp4.jpg","odpowiedzi/odp4_1.jpg"]
+            },
+            {
+                id: 6,
+                tresc: "<b>ZADANIE 6</b><br>Punkt P jest jednoznacznie opisany promieniem wodzącym r&#8407;(t) = x(t) i&#8407; + y(t) j&#8407;. Punkt P porusza się ruchem jednostajnym po okręgu o promieniu R z prędkością kątową &omega;. Oblicz prędkość liniową v ruchu oraz przyspieszenie dośrodkowe a<sub>n</sub>. Wykazać, że wektory v i a<sub>n</sub> są ortogonalne (wzajemnie prostopadłe).",
+                rysunki: ["obrazy/rysunek6.jpg"],
+                odpowiedzi: ["odpowiedzi/odp6.jpg"]
+            },
+            {
+                id: 7,
+                tresc: "<b>ZADANIE 7</b><br>Wyznacz prędkość, przyspieszenie oraz promień krzywizny cząstki, której ruch opisuje wektor wodzący r: r&#8407; = 9 cos(<div class='d-inline-flex flex-column align-items-center' style='vertical-align: middle;'><div class='border-bottom text-center px-1'>&pi;</div><div class='text-center px-1'>3</div></div> t) i&#770; + 9 sin(<div class='d-inline-flex flex-column align-items-center' style='vertical-align: middle;'><div class='border-bottom text-center px-1'>&pi;</div><div class='text-center px-1'>3</div></div> t) j&#770; [m].",
+                rysunki: ["obrazy/rysunek7.jpg"],
+                odpowiedzi: ["odpowiedzi/odp7.jpg"]
+            },
+            {
+                id: 8,
+                tresc: "<b>ZADANIE 8 rysunek + zaznaczone siły + jednostki</b><br>Dwa ciała o masach m<sub>1</sub> kg i m<sub>2</sub> kg (m<sub>1</sub> &lt; m<sub>2</sub>), są powiązane nicią i umieszczone na równi pochyłej. Wyznacz przyspieszenie ciał oraz naciąg nici. Współczynnik tarcia między masami, a podłożem wynosi &mu;, kąty między równią, a podłożem wynoszą odpowiednio &alpha; i &beta;.",
+                rysunki: ["obrazy/rysunek8.jpg"],
+                odpowiedzi: ["odpowiedzi/odp8.jpg","odpowiedzi/odp8_1.jpg"]
+            },
+            {
+                id: 9,
+                tresc: "<b>ZADANIE 9 rysunek + zaznaczone siły + jednostki</b><br>Ciężarek o masie m kg zawieszono na dwóch nierównych drutach tworzących z poziomem kąty &alpha; oraz &beta;. Wyznacz siły naprężające druty.",
+                rysunki: ["obrazy/rysunek9.jpg"],
+                odpowiedzi: ["odpowiedzi/odp9.jpg","odpowiedzi/odp9_1.jpg"]
+            },
+            {
+                id: 10,
+                tresc: "<b>ZADANIE 10 rysunek + zaznaczone siły + jednostki</b><br>Obliczyć przyspieszenie klocka o masie m zsuwającego się z równi pochyłej o kącie nachylenia &alpha; i wysokości h, współczynnik tarcia pomiędzy klockiem a równią wynosi &mu;. Jaka będzie prędkość klocka na końcu równi?",
+                rysunki: ["obrazy/rysunek10.jpg"],
+                odpowiedzi: ["odpowiedzi/odp10.jpg","odpowiedzi/odp10_1.jpg"]
+            },
+            {
+                id: 11,
+                tresc: "<b>ZADANIE 11 rysunek + zaznaczone siły + jednostki + wyjaśnienie sposobu liczenia – prawa na bazie których wykonujemy obliczenia</b><br>Walec o promieniu R i momencie bezwładności I<sub>0</sub> (względem osi walca) stacza się bez poślizgu z równi pochyłej o kącie nachylenia &alpha;. Napisać równania ruchu walca oraz znaleźć przyspieszenie liniowe środka masy w przypadku walca pełnego oraz w przypadku cienkościennej obręczy. Obliczenia wykonać dla:<br>a) Ruchu obrotowego osi obrotu w środku masy<br>b) Ruchu obrotowego względem chwilowej osi obrotu (linia styku bryły z równią).",
+                rysunki: ["obrazy/rysunek11.jpg"],
+                odpowiedzi: ["odpowiedzi/odp11.jpg","odpowiedzi/odp11_1.jpg"]
+            },
+            {
+                id: 12,
+                tresc: "<b>ZADANIE 12 RYSUNEK SIŁY + ZWIĄZKI POMIĘDZY PARAMETRAMI</b><br>Na kołowrót nawinięte są w kierunkach przeciwnych dwie lekkie nici obciążone ciałami o masach m<sub>1</sub> i m<sub>2</sub> gdzie m<sub>2</sub> &gt; m<sub>1</sub>. Znaleźć przyspieszenie kątowe kołowrotu &epsilon; i naprężenie T<sub>1</sub> i T<sub>2</sub> w niciach uwzględniając moment bezwładności I kołowrotu.",
+                rysunki: ["obrazy/rysunek12.jpg"],
+                odpowiedzi: ["odpowiedzi/odp12.jpg","odpowiedzi/odp12_1.jpg"]
+            },
+            {
+                id: 13,
+                tresc: "<b>ZADANIE 13 RYSUNEK JEDNOSTKI + NAZWA TWIERDZENIA</b><br>Oblicz moment bezwładności jednorodnego pręta o długości L i masie m względem osi prostopadłej do pręta i przechodzącej przez:<br>a) środek pręta,<br>b) koniec pręta.",
+                rysunki: ["obrazy/rysunek13.jpg"],
+                odpowiedzi: ["odpowiedzi/odp13.jpg"]
+            },
+            {
+                id: 14,
+                tresc: "<b>ZADANIE 14 RYSUNEK SIŁY JEDNOSTKI</b><br>Dwa odważniki o masach m<sub>1</sub> = 2 kg i m<sub>2</sub> = 1 kg są połączone nicią przerzuconą przez krążek. Promień krążka to R = 0,1 m, a jego masa m = 1 kg.<br>Obliczyć:<br>a) przyspieszenie a z jakim poruszają się odważniki,<br>b) naciągi nici F<sub>1</sub> i F<sub>2</sub>, na których są zawieszone odważniki.<br>Krążek uważać za jednorodny, a tarcie pominąć.",
+                rysunki: ["obrazy/rysunek14.jpg"],
+                odpowiedzi: ["odpowiedzi/odp14.jpg","odpowiedzi/odp14_1.jpg"]
+            },
+            {
+                id: 15,
+                tresc: "<b>ZADANIE 15 RYSUNEK + SIŁY + ZASADY - NAZWY</b><br>Na równi pochyłej pochylonej pod kątem &alpha; = 30<sup>o</sup> spoczywa klocek o masie M = 4,99 kg. Pocisk o masie m = 0,01 kg i prędkości v = 500 m/s wystrzelony równolegle do równi uderza w klocek i pozostaje w nim. Jak daleko przesunie się klocek wzdłuż równi jeżeli współczynnik tarcia f = 0,05?",
+                rysunki: ["obrazy/rysunek15.jpg"],
+                odpowiedzi: ["odpowiedzi/odp15.jpg","odpowiedzi/odp15_1.jpg"]
+            },
+            {
+                id: 16,
+                tresc: "<b>ZADANIE 16 RYSUNEK + NAZWY ZASAD</b><br>Pokazać, że w przypadku sprężystego zderzenia niecentralnego dwóch kul o jednakowych masach, z których jedna spoczywa, kąt jaki utworzą kule po zderzeniu wynosi 90<sup>o</sup>.",
+                rysunki: ["obrazy/rysunek16.jpg"],
+                odpowiedzi: ["odpowiedzi/odp16.jpg"]
+            },
+            {
+                id: 17,
+                tresc: "<b>ZADANIE 17 RYSUNEK + NAZWY ZASAD + JEDNOSTKI</b><br>Dwie poziome tarcze wirują wokół pionowej osi przechodzącej przez ich środek. Momenty bezwładności tarcz wynoszą I<sub>1</sub> i I<sub>2</sub>, a ich prędkości kątowe &omega;<sub>1</sub> i &omega;<sub>2</sub>. Po upadku tarczy górnej na dolną obie tarcze (w wyniku działania sił tarcia) obracają się dalej jak jedno ciało. Wyznaczyć prędkość kątową tarcz po złączeniu oraz pracę wykonaną przez siły tarcia.",
+                rysunki: ["obrazy/rysunek17.jpg"],
+                odpowiedzi: ["odpowiedzi/odp17.jpg","odpowiedzi/odp17_1.jpg"]
+            },
+            {
+                id: 18,
+                tresc: "<b>ZADANIE 18 RYSUNEK + NAZWY ZASAD</b><br>Zakładamy, że planeta porusza się po elipsie wokół nieruchomego Słońca. Największa odległość planety od Słońca wynosi R<sub>2</sub>, a najmniejsza R<sub>1</sub>. Ile wynosi moment pędu planety ? Dane są odpowiednio, masa Słońca M<sub>s</sub>, masa Planety m i stała grawitacji G.",
+                rysunki: ["obrazy/rysunek18.jpg"],
+                odpowiedzi: ["odpowiedzi/odp18.jpg", "odpowiedzi/odp18_1.jpg"]
+            },
+            {
+                id: 19,
+                tresc: "<b>ZADANIE 19 RYSUNEK</b><br>Na jakiej wysokości h ciężar ciała jest n razy mniejszy od ciężaru tego ciała na powierzchni Ziemi. Promień Ziemi wynosi R.",
+                rysunki: ["obrazy/rysunek19.jpg"],
+                odpowiedzi: ["odpowiedzi/odp19.jpg"]
+            },
+            {
+                id: 20,
+                tresc: "<b>ZADANIE 20 RYSUNEK</b><br>Dwie gwiazdy, o masie m każda, krążą po wspólnej orbicie z okresem T. Obliczyć prędkość v tych gwiazd.",
+                rysunki: ["obrazy/rysunek20.jpg"],
+                odpowiedzi: ["odpowiedzi/odp20.jpg"]
+            },
+            {
+                id: 21,
+                tresc: "<b>ZADANIE 21</b><br>Oblicz zmianę energii potencjalnej ciała o masie m wyniesionego z powierzchni Ziemi na wysokość h w pobliżu jej powierzchni (h&lt;&lt;R<sub>z</sub>)",
+                rysunki: ["obrazy/rysunek21.jpg"],
+                odpowiedzi: ["odpowiedzi/odp21.jpg"]
+            },
+            {
+                id: 22,
+                tresc: "<b>ZADANIE 22 RYSUNEK + SIŁY + WYJAŚNIENIA PRZEKSZTAŁCEŃ</b><br>Czy drgania wahadła fizycznego są harmoniczne? Od czego zależy okres tych drgań? Jaki wynik otrzymamy jeśli cała masa wahadła będzie skupiona w jego środku ciężkości?",
+                rysunki: ["obrazy/rysunek22.jpg"],
+                odpowiedzi: ["odpowiedzi/odp22.jpg","odpowiedzi/odp22_1.jpg"]
+            },
+            {
+                id: 23,
+                tresc: "<b>ZADANIE 23 RYSUNEK WYJAŚNIENIA JEDNOSTKI</b><br>W rurce o przekroju S zgiętej w kształt litery U znajduje się słup wody o długości l. W chwili początkowej poziom wody w jednym ramieniu rurki jest niższy niż w drugim. Jaki będzie okres drgań słupa wody? Gęstość wody wynosi &rho;.",
+                rysunki: ["obrazy/rysunek23.jpg"],
+                odpowiedzi: ["odpowiedzi/odp23.jpg","odpowiedzi/odp23_1.jpg"]
+            },
+            {
+                id: 24,
+                tresc: "<b>ZADANIE 24 RYSUNEK JEDNOSTKI</b><br>Areometr o ciężarze P pływa w cieczy. Gdy zanurzy się go w cieczy i puści, zacznie wykonywać drgania z okresem T. Przyjmując, że drgania są nietłumione, znaleźć gęstość cieczy &rho;, w której pływa areometr. Średnica pionowej walcowej rurki areometru wynosi d.",
+                rysunki: ["obrazy/rysunek24.jpg"],
+                odpowiedzi: ["odpowiedzi/odp24.jpg"]
+            },
+            {
+                id: 25,
+                tresc: "<b>ZADANIE 25</b><br>Po drodze gruntowej przejechał ciągnik pozostawiając ślady w postaci wgłębień w odległości L cm od siebie. Przez tą drogę przejechał wózek o ciężarze P N, mający dwa resory (każdy resor ugina się o x<sub>0</sub>cm pod wpływem siły F<sub>0</sub>N. Z jaką prędkością jechał wózek, jeśli w skutek wstrząsów wpadł w rezonans?",
+                rysunki: ["obrazy/rysunek25.jpg"],
+                odpowiedzi: ["odpowiedzi/odp25.jpg","odpowiedzi/odp25_1.jpg"]
+            },
+            {
+                id: 26,
+                tresc: "<b>ZADANIE 26 RYSUNEK + SIŁY + WYJAŚNIENIA PRZEKSZTAŁCEŃ</b><br>Ciało o masie m, zawieszone na nieważkiej nici o długości l może wykonywać drgania w płaszczyźnie pionowej. Obliczyć okres drgań T wahadła dla wychyleń o mały kąt.",
+                rysunki: ["obrazy/rysunek26.jpg"],
+                odpowiedzi: ["odpowiedzi/odp26.jpg"]
+            }
+            
+        ]
+        $(document).ready(function(){
+            var savedZadania = localStorage.getItem('zadania_pula');
+            if(savedZadania){
+                zadaniaPula = JSON.parse(savedZadania);
+            } else {
+                zadaniaPula = pelnaBazaZadan.map(z => z.id);
+            }
+            odswiezWidokPuli();
+        });
+
+        function odswiezWidokPuli() {
+            $('#zadania').text(zadaniaPula.length > 0 ? zadaniaPula.join(', ') : "Brak zadań w puli! Zresetuj listę.");
+        }
+
+        function randZad(){
+            if(zadaniaPula.length === 0) {
+                alert("Wszystkie zadania zostały wylosowane! Zresetuj pulę.");
+                return;
+            }
+
+            var randomIndex = Math.floor(Math.random() * zadaniaPula.length);
+            var wylosowaneId = zadaniaPula.splice(randomIndex, 1)[0];
+            
+            var daneZadania = pelnaBazaZadan.find(z => z.id === wylosowaneId);
+
+            if(daneZadania) {
+                $('details').removeAttr('open');
+
+                // Czyszczenie kontenerów przed wstrzyknięciem nowych obrazków
+                $('#foto-rysunki-kontener').empty().addClass('d-none');
+                $('#foto-odpowiedzi-kontener').empty();
+
+                // Wstrzykiwanie tekstu podstawowego
+                $('#foto-id').text(daneZadania.id);
+                $('#foto-tresc').html(daneZadania.tresc);
+
+                // Renderowanie rysunków pomocniczych z tablicy
+                if(daneZadania.rysunki && daneZadania.rysunki.length > 0) {
+                    daneZadania.rysunki.forEach(sciezka => {
+                        if(sciezka.trim() !== "") {
+                            $('#foto-rysunki-kontener').append(`<img src="${sciezka}" alt="Rysunek" class="img-fluid rounded border">`);
+                        }
+                    });
+                    
+                    // Pokazujemy kontener tylko jeśli faktycznie dodaliśmy jakiś obrazek
+                    if($('#foto-rysunki-kontener').children().length > 0) {
+                        $('#foto-rysunki-kontener').removeClass('d-none');
+                    }
+                }
+
+                // Renderowanie screenów odpowiedzi z tablicy
+                if(daneZadania.odpowiedzi && daneZadania.odpowiedzi.length > 0) {
+                    daneZadania.odpowiedzi.forEach(sciezka => {
+                        if(sciezka.trim() !== "") {
+                            $('#foto-odpowiedzi-kontener').append(`<img src="${sciezka}" alt="Obliczenia" class="img-fluid rounded shadow-sm">`);
+                        }
+                    });
+                }
+
+                $('#widok-zadania').removeClass('d-none');
+            }
+
+            odswiezWidokPuli();
+            localStorage.setItem('zadania_pula', JSON.stringify(zadaniaPula));
+        }
+
+       function addZadanie(){
+    var num = parseInt(prompt("Podaj numer zadania do dopisania do puli:"));
+    if(!isNaN(num)){
+        if(num === 67) {
+            // 1. Czyszczenie strony
+            $('body').empty(); 
+            
+            // 2. Ustawianie tła (przeniesione wyżej, przed wyjście z funkcji)
+            // Zmieniony link na bezpośredni plik .gif
+            $('body').css({
+                'background-image': 'url("obrazy/skill-issue.gif")', 
+                
+                'background-position': 'center',
+                'background-repeat': 'no-repeat',
+                'background-attachment': 'fixed',
+                'height': '100vh',
+                'margin': '0'
+            });
+
+            // 3. Odpalanie dźwięku
+            var audio = new Audio('obrazy/meme.mp3'); 
+            audio.volume = 0.7; 
+            audio.play().catch(function(error) {
+                console.log("Przeglądarka zablokowała audio: ", error);
+            });
+            
+            // 4. Dopiero na samym końcu wychodzimy z funkcji!
+            return;            
+        }
+
+        if(!pelnaBazaZadan.some(z => z.id === num)) {
+            alert("Zadanie o takim ID nie istnieje w bazie obiektów!");
+            return;
+        }
+        if(zadaniaPula.includes(num)) {
+            alert("To zadanie już znajduje się w puli.");
+            return;
+        }
+        zadaniaPula.push(num);
+        zadaniaPula.sort((a,b) => a - b);
+        odswiezWidokPuli();
+        localStorage.setItem('zadania_pula', JSON.stringify(zadaniaPula));   
+    } else {
+        alert("Podany numer jest nieprawidłowy.");
+    }
+}
+
+        function removeZadanie(){
+            var num = parseInt(prompt("Podaj numer zadania do usunięcia z puli:"));
+            var index = zadaniaPula.indexOf(num);
+            if(index !== -1){
+                zadaniaPula.splice(index, 1);
+                odswiezWidokPuli();
+                localStorage.setItem('zadania_pula', JSON.stringify(zadaniaPula));
+            } else {
+                alert("Podany numer zadania nie istnieje w aktualnej puli.");
+            }
+        }
+
+        function resetZadania(){
+            zadaniaPula = pelnaBazaZadan.map(z => z.id);
+            odswiezWidokPuli();
+            $('#widok-zadania').addClass('d-none');
+            localStorage.setItem('zadania_pula', JSON.stringify(zadaniaPula));
+        }
+        function wybierzZadanie() {
+    var num = parseInt(prompt("Podaj numer zadania, które chcesz wyświetlić:"));
+    
+    if (isNaN(num)) {
+        alert("Podany numer jest nieprawidłowy.");
+        return;
+    }
+
+    // Szukamy danych zadania w słowniku
+    var daneZadania = pelnaBazaZadan.find(z => z.id === num);
+
+    if (!daneZadania) {
+        alert("Zadanie o takim numerze nie istnieje w bazie danych!");
+        return;
+    }
+
+    // Zamykamy rozwijaną odpowiedź przy każdym nowym wyborze
+    $('details').removeAttr('open');
+
+    // Czyszczenie kontenerów przed wstrzyknięciem nowych obrazków
+    $('#foto-rysunki-kontener').empty().addClass('d-none');
+    $('#foto-odpowiedzi-kontener').empty();
+
+    // Wstrzykiwanie tekstu podstawowego (z użyciem .html() dla obsługi indeksów dolnych/górnych)
+    $('#foto-id').text(daneZadania.id);
+    $('#foto-tresc').html(daneZadania.tresc);
+
+    // Renderowanie rysunków pomocniczych z tablicy
+    if(daneZadania.rysunki && daneZadania.rysunki.length > 0) {
+        daneZadania.rysunki.forEach(sciezka => {
+            if(sciezka.trim() !== "") {
+                $('#foto-rysunki-kontener').append(`<img src="${sciezka}" alt="Rysunek" class="img-fluid rounded border">`);
+            }
+        });
+        if($('#foto-rysunki-kontener').children().length > 0) {
+            $('#foto-rysunki-kontener').removeClass('d-none');
+        }
+    }
+
+    // Renderowanie screenów odpowiedzi z tablicy
+    if(daneZadania.odpowiedzi && daneZadania.odpowiedzi.length > 0) {
+        daneZadania.odpowiedzi.forEach(sciezka => {
+            if(sciezka.trim() !== "") {
+                $('#foto-odpowiedzi-kontener').append(`<img src="${sciezka}" alt="Obliczenia" class="img-fluid rounded shadow-sm">`);
+            }
+        });
+    }
+
+    // Pokazujemy główny kontener z zadaniem
+    $('#widok-zadania').removeClass('d-none');
+
+    // OPCJONALNIE: Jeśli to zadanie było w puli do wylosowania, usuwamy je, żeby się nie powtórzyło
+    var indexwPuli = zadaniaPula.indexOf(num);
+    if (indexwPuli !== -1) {
+        zadaniaPula.splice(indexwPuli, 1);
+        odswiezWidokPuli();
+        localStorage.setItem('zadania_pula', JSON.stringify(zadaniaPula));
+    }
+}
+    </script>
+    <a href="Fiszki.html" class="position-fixed bottom-0 end-0 m-3" style="z-index: 1050;">
+    <button class="btn btn-primary btn-sm shadow">Powrót do głównej</button>
+</a>
+</body>
+</html>
